@@ -2,6 +2,7 @@ package facex
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"io"
 )
@@ -101,4 +102,8 @@ func toPayload(in interface{}) io.Reader {
 	data, _ := json.Marshal(in)
 
 	return bytes.NewBuffer(data)
+}
+
+func toFaceBase64(dat []byte) string {
+	return "data:application/octet-stream;base64," + base64.StdEncoding.EncodeToString(dat)
 }

@@ -1,6 +1,8 @@
 package facex
 
 import (
+	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/golib/assert"
@@ -8,14 +10,14 @@ import (
 
 func TestFaceXNewGroup(t *testing.T) {
 	assertion := assert.New(t)
-	input := NewFacexInput("http://oy5ixix1l.bkt.clouddn.com/face1.png", "1")
+	input := NewFacexInput(testFace("./face1.png"), "1")
 	err := testClient().NewGroup(input)
 	assertion.Nil(err)
 }
 
 func TestFaceXAddGroup(t *testing.T) {
 	assertion := assert.New(t)
-	err := testClient().AddFace("http://oy5ixix1l.bkt.clouddn.com/miss.png", "5")
+	err := testClient().AddFace(testFace("./face1.png"), "2")
 	assertion.Nil(err)
 }
 
@@ -23,13 +25,13 @@ func TestFaceXSearch(t *testing.T) {
 	assertion := assert.New(t)
 
 	facex := testClient()
-	result, err := facex.Search("http://oy5ixix1l.bkt.clouddn.com/miss.png")
+	result, err := facex.Search(testFace("./miss.png"))
 	assertion.Nil(err)
 	assertion.NotNil(result)
 
 	assertion.False(result.IsOK())
 
-	result, err = facex.Search("http://oy5ixix1l.bkt.clouddn.com/face2.png")
+	result, err = facex.Search(testFace("./face2.png"))
 	assertion.Nil(err)
 	assertion.NotNil(result)
 
@@ -48,11 +50,16 @@ func TestFaceXRemoveGroup(t *testing.T) {
 func testClient() *Facex {
 	return NewFacex(&Config{
 		Endpoint:  "http://argus.atlab.ai",
-		AccessKey: "",
-		SecretKey: "",
-		GroupId:   "facex",
+		AccessKey: os.Getenv("QINIUAK"),
+		SecretKey: os.Getenv("QINIUSK"),
 
+		GroupId:   "testfacex",
 		Timeout:   8,
 		Threshold: 0.7,
 	})
+}
+
+func testFace(path string) string {
+	dat, _ := ioutil.ReadFile(path)
+	return toFaceBase64(dat)
 }
