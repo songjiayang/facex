@@ -56,8 +56,13 @@ func (facex *Facex) AddFace(uri, id string) (err error) {
 	return
 }
 
+func (facex *Facex) AddFaces(input FacexInput) (err error) {
+	_, err = facex.Send(http.MethodPost, facex.API(groupAddAPI), mimeType, facex.timeout, toPayload(input))
+	return
+}
+
 func (facex *Facex) AddFaceWithByte(dat []byte, id string) (err error) {
-	return facex.AddFace(toFaceBase64(dat), id)
+	return facex.AddFace(NewFaceBase64(dat), id)
 }
 
 func (facex *Facex) DeleteFace(ids []string) (err error) {

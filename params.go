@@ -16,6 +16,10 @@ type FacexInputItem struct {
 	Attribute map[string]string `json:"attribute"`
 }
 
+func NewFaceBase64(dat []byte) string {
+	return "data:application/octet-stream;base64," + base64.StdEncoding.EncodeToString(dat)
+}
+
 func NewFacexInput(uri, id string) FacexInput {
 	return FacexInput{
 		Data: []*FacexInputItem{
@@ -102,8 +106,4 @@ func toPayload(in interface{}) io.Reader {
 	data, _ := json.Marshal(in)
 
 	return bytes.NewBuffer(data)
-}
-
-func toFaceBase64(dat []byte) string {
-	return "data:application/octet-stream;base64," + base64.StdEncoding.EncodeToString(dat)
 }

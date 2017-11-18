@@ -61,5 +61,5 @@ func testClient() *Facex {
 
 func testFace(path string) string {
 	dat, _ := ioutil.ReadFile(path)
-	return toFaceBase64(dat)
+	return NewFaceBase64(dat)
 }
