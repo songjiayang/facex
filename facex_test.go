@@ -38,6 +38,24 @@ func TestFaceXSearch(t *testing.T) {
 	assertion.True(result.IsOK())
 }
 
+func TestFaceXDelete(t *testing.T) {
+	assertion := assert.New(t)
+
+	facex := testClient()
+	err := facex.DeleteFace([]string{"1", "2"})
+	assertion.Nil(err)
+
+	result, err := facex.Search(testFace("./face1.png"))
+	assertion.Nil(err)
+	assertion.NotNil(result)
+	assertion.False(result.IsOK())
+
+	result, err = facex.Search(testFace("./face2.png"))
+	assertion.Nil(err)
+	assertion.NotNil(result)
+	assertion.False(result.IsOK())
+}
+
 func TestFaceXRemoveGroup(t *testing.T) {
 	assertion := assert.New(t)
 

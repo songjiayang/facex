@@ -26,7 +26,7 @@ func NewFacexInput(uri, id string) FacexInput {
 			&FacexInputItem{
 				URI: uri,
 				Attribute: map[string]string{
-					"name": id,
+					"id": id,
 				},
 			},
 		},
